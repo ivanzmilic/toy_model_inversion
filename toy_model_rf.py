@@ -30,7 +30,7 @@ profile = 1./np.sqrt(np.pi) * np.exp(-x**2.0)
 #now define the source function:
 S = np.zeros(ND)
 # linearly decreasing
-S = 6000.0 + (logtau-1.0) * 1000.0
+S = 6000.0 + (logtau-1.0) * 1000.0 # units making it be like K 
 S /= max(S) #to make things eaier
 
 spectra = ez_formal_solution(S,tau,eta,profile)
@@ -41,9 +41,11 @@ plt.subplot(211)
 plt.plot(logtau,S)
 plt.xlabel('$\\log \,\\tau$')
 plt.ylabel('$S$')
+plt.title("Source function vs logtau")
 plt.subplot(212)
 plt.plot(x*0.05+6301.5,spectra)
 plt.xlabel('$\lambda\,[\,\AA]$')
+plt.title("Line shape")
 plt.ylabel('Intensity')
 plt.gca().get_xaxis().get_major_formatter().set_useOffset(False)
 plt.tight_layout()
@@ -63,21 +65,9 @@ plt.clf()
 plt.cla()
 plt.plot(logtau,S,label='Original')
 
-Nexp  = 30
-
-accuracy = np.zeros(Nexp)
-modulus = np.zeros(Nexp)
-
-#criteria = 1E-1
-
-#for i in range(0,Nexp):
-
 rf_pseudo_inv = np.linalg.pinv(rf)
-#criteria /= np.sqrt(10.0)
 
 S_solved = np.dot(rf_pseudo_inv,spectra)
-#accuracy[i] = np.linalg.norm(spectra - np.dot(rf,S_solved))
-#modulus[i] = np.linalg.norm(S_solved-S)
 
 #we now have a new solution. if you started this in ipython you can plot and see the differences
 # for now let's just print:
